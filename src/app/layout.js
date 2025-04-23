@@ -3,6 +3,9 @@ import "./globals.css";
 import { NextAuthProvider } from "@/providers/NextAuthProvider";
 import { Toaster } from "react-hot-toast";
 import Footer from "../components/ui/Footer";
+import { NotificationProvider } from "@/providers/NotificationProvider";
+import NotificationPopup from "@/components/ui/NotificationPopup";
+import AdminNotificationButton from "@/components/ui/AdminNotificationButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +29,15 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextAuthProvider>
-          <main className="min-h-screen flex flex-col">
-            <div className="flex-grow">{children}</div>
-            <Footer />
-          </main>
-          <Toaster position="top-right" />
+          <NotificationProvider>
+            <main className="min-h-screen flex flex-col">
+              <div className="flex-grow">{children}</div>
+              <Footer />
+            </main>
+            <NotificationPopup />
+            <AdminNotificationButton />
+            <Toaster position="top-right" />
+          </NotificationProvider>
         </NextAuthProvider>
       </body>
     </html>
