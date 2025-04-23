@@ -93,7 +93,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Real-time RSVP Tracking</h3>
               <p className="text-gray-600">
-                Instantly see who's attending, who's declined, and manage your guest list with ease.
+                Instantly see who&apos;s attending, who&apos;s declined, and manage your guest list with ease.
               </p>
             </div>
 

@@ -1,14 +1,13 @@
-import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongodb';
+import connectDB from '@/lib/mongodb';
 import Status from '@/models/Status';
 import User from '@/models/User';
-import { authOptions } from '@/auth';
+import { auth } from '@/auth';
 
 // Get the current system status
 export async function GET() {
   try {
-    await connectToDatabase();
+    await connectDB();
     const status = await Status.findOne().sort({ createdAt: -1 }).populate('user', 'name email role');
     
     if (!status) {
@@ -34,7 +33,7 @@ export async function GET() {
 // Update system status (admin only)
 export async function PUT(req) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -48,7 +47,7 @@ export async function PUT(req) {
     
     const { isOnline, isChatbotActive } = await req.json();
     
-    await connectToDatabase();
+    await connectDB();
     
     let status = await Status.findOne({ user: user._id });
     

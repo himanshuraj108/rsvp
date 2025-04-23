@@ -22,20 +22,15 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
 
-  // Add immediate redirect check
-  if (status === 'unauthenticated') {
-    router.push('/login');
-    return null;
-  }
-
+  // Handle authentication status
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login');
     }
   }, [status, router]);
 
+  // Fetch user data
   useEffect(() => {
-    // Fetch user data from API
     const fetchUserData = async () => {
       if (status !== 'authenticated' || !session) return;
       
@@ -53,6 +48,7 @@ export default function ProfilePage() {
     fetchUserData();
   }, [session, status]);
 
+  // Fetch user events
   useEffect(() => {
     const fetchUserEvents = async () => {
       if (status !== 'authenticated' || !session) return;
@@ -120,8 +116,12 @@ export default function ProfilePage() {
     );
   }
 
-  if (!session) {
+  if (status === 'unauthenticated') {
     return null; // Will redirect to login from useEffect
+  }
+
+  if (!session) {
+    return null;
   }
 
   const { organizedEvents, attendingEvents, maybeEvents, pastEvents } = userEvents;
